@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title     String   @db.VarChar(255)
+  content   String?
+  authorid  Int
+  user      user     @relation(fields: [authorid], references: [id], map: "Post_authorId_fkey")
+
+  @@index([authorid], map: "Post_authorid_fkey")
+}
+
+model profile {
+  id            Int    @id @default(autoincrement())
+  lastname      String
+  userid        Int    @unique(map: "Profile_userId_key")
+  firstname     String @db.VarChar(45)
+  jobtype       String @db.VarChar(45)
+  email         String @db.VarChar(45)
+  acceptedterms Int    @db.TinyInt
+  user          user   @relation(fields: [userid], references: [id], map: "Profile_userId_fkey")
+}
+
+model user {
+  id        Int         @id @default(autoincrement())
+  email     String      @unique(map: "User_email_key")
+  name      String?
+  password  String?
+  favourite favourite[]
+  post      post[]
+  profile   profile?
+}
+
+model favourite {
+  id     Int  @id @default(autoincrement())
+  caseid Int
+  userid Int
+  user   user @relation(fields: [userid], references: [id], map: "User_id_fkey")
+
+  @@index([userid], map: "User_id_fkey")
+}
