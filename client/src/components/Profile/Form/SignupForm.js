@@ -169,11 +169,11 @@ const SignupForm = () => {
           />
 
           <Select id="jobType" label="Job Type" name="jobType" >
-          {jobs.map((job) =>
-          <option key={job.value} value={job.value} 
-          selected={job.value===jobType?'selected':''}
-        >{jobs.label}</option>
-          )};
+            {jobs.map((job) => <option key={job.value} value={job.value} label={job.label}
+              selected={job.value === jobType ? 'selected' : ''}
+            />
+            )}
+
           </Select>
 
           <Checkbox name="acceptedTerms">
